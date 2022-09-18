@@ -2,6 +2,7 @@
 using namespace sf;
 #include <iostream>
 #include <vector>
+#include <cmath>
 using namespace std;
 
 int main()
@@ -16,27 +17,34 @@ int main()
 
 	vector<Vector2f> vertices;   ///push_back stuff into us!
 	vector<Vector2f> points;
+	int vertPicked = 0;
+
 
 	Vector2f clicked;
 
 	// Draw text
 	Text titleText;
 	Text firstInstruction;
+	Text secondInstruction;
 	// Choose font
 	Font font;
 	font.loadFromFile("fonts/specialagent.ttf");
 	// Set font to text
 	titleText.setFont(font);
 	firstInstruction.setFont(font);
+	secondInstruction.setFont(font);
 	// Assign message
 	titleText.setString("Chaos Game!");
 	firstInstruction.setString("Click three points in the shape of a triangle to start!");
+	secondInstruction.setString("Now click anywhere inside the three points!");
 	// Increase size of characters
 	titleText.setCharacterSize(75);
 	firstInstruction.setCharacterSize(50);
+	secondInstruction.setCharacterSize(50);
 	// Assign a color
 	titleText.setFillColor(Color::White);
 	firstInstruction.setFillColor(Color::White);
+	secondInstruction.setFillColor(Color::White);
 
 	// Position text
 	FloatRect textRect1 = titleText.getLocalBounds();
@@ -49,8 +57,14 @@ int main()
 		textRect2.width / 2.0f,
 		textRect2.top +
 		textRect2.height / 2.0f);
+	FloatRect textRect3 = secondInstruction.getLocalBounds();
+	secondInstruction.setOrigin(textRect2.left +
+		textRect3.width / 2.0f,
+		textRect3.top +
+		textRect3.height / 2.0f);
 	titleText.setPosition(1920 / 2.0f, 1080 / 20.0f);
 	firstInstruction.setPosition(1920 / 2.0f, 1080 / 10.0f);
+	secondInstruction.setPosition(1920 / 2.0f, 1080 / 10.0f);
 
 	while (window.isOpen())
 	{
@@ -70,12 +84,15 @@ int main()
 			{
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
-					std::cout << "the left button was pressed" << std::endl;
-					std::cout << "mouse x: " << event.mouseButton.x << std::endl;
-					std::cout << "mouse y: " << event.mouseButton.y << std::endl;
+					// Updates vertices vector with user input's coordinates
+					if (vertices.size() < 4)
+					{
+						vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
+						cout << "the left button was pressed" << std::endl;
+						cout << "mouse x: " << event.mouseButton.x << std::endl;
+						cout << "mouse y: " << event.mouseButton.y << std::endl;
+					}
 
-					clicked.x = event.mouseButton.x;
-					clicked.y = event.mouseButton.y;
 				}
 			}
 
@@ -91,7 +108,7 @@ int main()
 		Update the scene
 		****************************************
 		*/
-		rect.setPosition(clicked.x, clicked.y);
+		
 		rect.setFillColor(Color::White);
 		/*
 		****************************************
@@ -105,13 +122,35 @@ int main()
 
 		// Draw Text
 		window.draw(titleText);
-		window.draw(firstInstruction);
+		if (vertices.size() < 3)
+		{
+			window.draw(firstInstruction);
+		}
+
+		if (vertices.size() == 3 && vertices.size() < 5)
+		{
+			window.draw(secondInstruction);
+		}
+
+		
 
 		// Draw our game scene here
-		window.draw(rect);
+		for (int i = 0; i < vertices.size(); i++)
+		{
+			rect.setPosition(vertices.at(i).x, vertices.at(i).y);
+			window.draw(rect);
+		}
+		if (vertices.size() == 4)
+		{
+			window.clear();
+			window.draw(titleText);
+		}
+		
+
+
 		window.display();
 
-
 	}
+
 	return 0;
 }
