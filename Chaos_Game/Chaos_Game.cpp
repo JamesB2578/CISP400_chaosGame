@@ -12,12 +12,45 @@ int main()
 	// Create and open a window for the game
 
 	RenderWindow window(vm, "Sierpinski Triangle!!", Style::Default);
-	RectangleShape rect(Vector2f{ 20,10 });
+	RectangleShape rect(Vector2f{ 3,3 });
 
 	vector<Vector2f> vertices;   ///push_back stuff into us!
 	vector<Vector2f> points;
 
 	Vector2f clicked;
+
+	// Draw text
+	Text titleText;
+	Text firstInstruction;
+	// Choose font
+	Font font;
+	font.loadFromFile("fonts/specialagent.ttf");
+	// Set font to text
+	titleText.setFont(font);
+	firstInstruction.setFont(font);
+	// Assign message
+	titleText.setString("Chaos Game!");
+	firstInstruction.setString("Click three points in the shape of a triangle to start!");
+	// Increase size of characters
+	titleText.setCharacterSize(75);
+	firstInstruction.setCharacterSize(50);
+	// Assign a color
+	titleText.setFillColor(Color::White);
+	firstInstruction.setFillColor(Color::White);
+
+	// Position text
+	FloatRect textRect1 = titleText.getLocalBounds();
+	titleText.setOrigin(textRect1.left +
+		textRect1.width / 2.0f,
+		textRect1.top +
+		textRect1.height / 2.0f);
+	FloatRect textRect2 = firstInstruction.getLocalBounds();
+	firstInstruction.setOrigin(textRect2.left +
+		textRect2.width / 2.0f,
+		textRect2.top +
+		textRect2.height / 2.0f);
+	titleText.setPosition(1920 / 2.0f, 1080 / 20.0f);
+	firstInstruction.setPosition(1920 / 2.0f, 1080 / 10.0f);
 
 	while (window.isOpen())
 	{
@@ -59,7 +92,7 @@ int main()
 		****************************************
 		*/
 		rect.setPosition(clicked.x, clicked.y);
-		rect.setFillColor(Color::Blue);
+		rect.setFillColor(Color::White);
 		/*
 		****************************************
 		Draw the scene
@@ -69,6 +102,11 @@ int main()
 		///loop through vectors and draw each coordinate
 		// Clear everything from the last run frame
 		window.clear();
+
+		// Draw Text
+		window.draw(titleText);
+		window.draw(firstInstruction);
+
 		// Draw our game scene here
 		window.draw(rect);
 		window.display();
