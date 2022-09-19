@@ -91,18 +91,16 @@ int main()
 					if (vertices.size() < 3)
 					{
 						vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
-						cout << "the left button was pressed" << std::endl;
-						cout << "mouse x: " << event.mouseButton.x << std::endl;
-						cout << "mouse y: " << event.mouseButton.y << std::endl;
+						cout << "Point created at: " << "(" << event.mouseButton.x 
+							<< ", "  << event.mouseButton.y << ")" << endl;
 
 					}
 
 					else if (points.size() == 0)
 					{
 						points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
-						cout << "the left button was pressed" << std::endl;
-						cout << "mouse x: " << event.mouseButton.x << std::endl;
-						cout << "mouse y: " << event.mouseButton.y << std::endl;
+						cout << "Point created at: " << "(" << event.mouseButton.x
+							<< ", " << event.mouseButton.y << ")" << endl;
 					}
 
 				}
@@ -121,14 +119,8 @@ int main()
 			midPoint_x = (points[points.size() - 1].x + vertices[randPoint].x) / 2;
 			midPoint_y = (points[points.size() - 1].y + vertices[randPoint].y) / 2;
 			points.push_back(Vector2f(midPoint_x, midPoint_y));
-			cout << "points size: " << length << endl;
-			cout << "ranPoint: " << randPoint << endl;
-			cout << "points[points.size() - 1].x: " << points[length - 1].x << endl;
-			cout << "points[points.size() - 1].y: " << points[length - 1].y << endl;
-			cout << "vertices[randPoint].x: " << vertices.at(randPoint).x << endl;
-			cout << "vertices[randPoint].y: " << vertices.at(randPoint).y << endl;
-			cout << "midpoint_x: " << midPoint_x << endl;
-			cout << "midpoint_y: " << midPoint_y << endl;
+			cout << "Point created at: " << "(" << midPoint_x
+				<< ", " << midPoint_y << ")" << endl;
 		}
 
 		if (Keyboard::isKeyPressed(Keyboard::Escape))
@@ -160,7 +152,7 @@ int main()
 			window.draw(firstInstruction);
 		}
 
-		if (vertices.size() == 3 && vertices.size() < 4)
+		if (vertices.size() == 3 && vertices.size() < 5)
 		{
 			window.draw(secondInstruction);
 		}
