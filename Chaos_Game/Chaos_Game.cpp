@@ -31,7 +31,7 @@ int main()
 	Text secondInstruction;
 	// Choose font
 	Font font;
-	font.loadFromFile("fonts/KOMIKAP_.ttf");
+	font.loadFromFile("fonts/specialagent.ttf");
 	// Set font to text
 	titleText.setFont(font);
 	firstInstruction.setFont(font);
