@@ -2,6 +2,7 @@
 using namespace sf;
 #include <iostream>
 #include <vector>
+#include <ctime>
 #include <cmath>
 using namespace std;
 
@@ -14,12 +15,14 @@ int main()
 
 	RenderWindow window(vm, "Sierpinski Triangle!!", Style::Default);
 	RectangleShape rect(Vector2f{ 3,3 });
+	RectangleShape dot(Vector2f(1, 1));
+	dot.setSize(Vector2f(1, 1));
 
 	vector<Vector2f> vertices;   ///push_back stuff into us!
 	vector<Vector2f> points;
-	int vertPicked = 0;
-
-
+	int midPoint_x;
+	int midPoint_y;
+	int randPoint;
 	Vector2f clicked;
 
 	// Draw text
@@ -85,9 +88,18 @@ int main()
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
 					// Updates vertices vector with user input's coordinates
-					if (vertices.size() < 4)
+					if (vertices.size() < 3)
 					{
 						vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
+						cout << "the left button was pressed" << std::endl;
+						cout << "mouse x: " << event.mouseButton.x << std::endl;
+						cout << "mouse y: " << event.mouseButton.y << std::endl;
+
+					}
+
+					else if (points.size() == 0)
+					{
+						points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
 						cout << "the left button was pressed" << std::endl;
 						cout << "mouse x: " << event.mouseButton.x << std::endl;
 						cout << "mouse y: " << event.mouseButton.y << std::endl;
@@ -96,6 +108,27 @@ int main()
 				}
 			}
 
+
+		}
+
+		randPoint = (rand() % 3);
+
+
+		if (points.size() > 0)
+		{
+			int length = points.size();
+
+			midPoint_x = (points[points.size() - 1].x + vertices[randPoint].x) / 2;
+			midPoint_y = (points[points.size() - 1].y + vertices[randPoint].y) / 2;
+			points.push_back(Vector2f(midPoint_x, midPoint_y));
+			cout << "points size: " << length << endl;
+			cout << "ranPoint: " << randPoint << endl;
+			cout << "points[points.size() - 1].x: " << points[length - 1].x << endl;
+			cout << "points[points.size() - 1].y: " << points[length - 1].y << endl;
+			cout << "vertices[randPoint].x: " << vertices.at(randPoint).x << endl;
+			cout << "vertices[randPoint].y: " << vertices.at(randPoint).y << endl;
+			cout << "midpoint_x: " << midPoint_x << endl;
+			cout << "midpoint_y: " << midPoint_y << endl;
 		}
 
 		if (Keyboard::isKeyPressed(Keyboard::Escape))
@@ -127,12 +160,10 @@ int main()
 			window.draw(firstInstruction);
 		}
 
-		if (vertices.size() == 3 && vertices.size() < 5)
+		if (vertices.size() == 3 && vertices.size() < 4)
 		{
 			window.draw(secondInstruction);
 		}
-
-		
 
 		// Draw our game scene here
 		for (int i = 0; i < vertices.size(); i++)
@@ -140,13 +171,19 @@ int main()
 			rect.setPosition(vertices.at(i).x, vertices.at(i).y);
 			window.draw(rect);
 		}
-		if (vertices.size() == 4)
+
+		if (points.size() > 1)
 		{
 			window.clear();
 			window.draw(titleText);
 		}
-		
 
+		// Draw our game scene here
+		for (int i = 1; i < points.size(); i++)
+		{
+			dot.setPosition(points.at(i).x, points.at(i).y);
+			window.draw(dot);
+		}
 
 		window.display();
 
